@@ -139,6 +139,7 @@ static const struct xpad_device {
 	char *name;
 	u8 mapping;
 	u8 xtype;
+	u8 quirks;
 } xpad_device[] = {
 	/* Please keep this list sorted by vendor and product ID. */
 	{ 0x0079, 0x18d4, "GPD Win 2 X-Box Controller", 0, XTYPE_XBOX360 },
@@ -2008,6 +2009,13 @@ static void xpad_set_up_abs(struct input_dev *input_dev, signed short abs)
 			break;
 		}
 	case ABS_RZ:	/* the triggers (if mapped to axes) */
+		if (xpad->xtype == XTYPE_XBOXONE) {
+			/* GHL Whammy bar */
+			if (xpad->quirks & QUIRK_GHL_XBOXONE)
+				input_set_abs_params(input_dev, abs, -32767, 32767, 0, 0);
+			else
+				input_set_abs_params(input_dev, abs, 0, 1023, 0, 0);
+		} else
 		if (xpad->xtype == XTYPE_XBOXONE)
 			input_set_abs_params(input_dev, abs, 0, 1023, 0, 0);
 		else
