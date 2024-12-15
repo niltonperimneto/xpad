@@ -1539,6 +1539,12 @@ static void xpad_deinit_output(struct usb_xpad *xpad)
 {
 	if (xpad->xtype != XTYPE_UNKNOWN) {
 		usb_free_urb(xpad->irq_out);
+
+	if (xpad->quirks & QUIRK_GHL_XBOXONE) {
+		usb_free_urb(xpad->ghl_urb);
+		del_timer_sync(&xpad->ghl_poke_timer);
+	}
+		
 		usb_free_coherent(xpad->udev, XPAD_PKT_LEN,
 				xpad->odata, xpad->odata_dma);
 	}
