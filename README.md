@@ -30,7 +30,7 @@ sudo dkms install -m xpad -v 0.4
 ```
 cd /usr/src/xpad-0.4
 sudo git fetch
-sudo git checkout origin/master
+sudo git checkout origin/devel
 sudo dkms remove -m xpad -v 0.4 --all
 sudo dkms install -m xpad -v 0.4
 ```
